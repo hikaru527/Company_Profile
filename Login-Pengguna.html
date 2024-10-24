@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - Tix Pablo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #dc3545;
+            --accent-color: #00f7ff;
+            --dark-bg: #0a1128;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark-bg);
+            overflow-x: hidden;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .login-section {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, 
+                rgba(10, 17, 40, 0.9), 
+                rgba(220, 53, 69, 0.8)),
+                url("foto3.webp") center/cover no-repeat;
+            z-index: 2;
+        }
+
+        .login-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, 
+                    rgba(0, 247, 255, 0.1) 1px, 
+                    transparent 1px) 0 0 / 50px 50px,
+                linear-gradient(rgba(0, 247, 255, 0.1) 1px, 
+                    transparent 1px) 0 0 / 50px 50px;
+            pointer-events: none;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.2),
+                        0 0 60px rgba(220, 53, 69, 0.2);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            animation: borderSlide 4s linear infinite;
+        }
+
+        @keyframes borderSlide {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .login-logo {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            margin-bottom: 30px;
+            display: inline-block;
+            position: relative;
+        }
+
+        .login-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+        }
+
+        .btn-login {
+            background: linear-gradient(45deg, var(--primary-color), #ff4d5a);
+            border: none;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .social-login {
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 10px;
+            background: #f8f9fa;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .security-features {
+            background: rgba(10, 17, 40, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .security-features i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+
+        .password-strength {
+            height: 3px;
+            background: #ddd;
+            margin-top: 5px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .password-strength-meter {
+            height: 100%;
+            width: 0;
+            transition: all 0.3s ease;
+        }
+
+        .weak { width: 33%; background: #ff4d4d; }
+        .medium { width: 66%; background: #ffd700; }
+        .strong { width: 100%; background: #00cc00; }
+
+        .capslock-warning {
+            display: none;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                width: 95%;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">Tix Pablo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">Tentang Kami</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tim">Tim</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#kontak">Kontak Kami</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="particles" id="particles-js"></div>
+
+<section class="login-section d-flex align-items-center justify-content-center">
+    <div class="login-container">
+        <div class="text-center">
+            <a href="index.html" class="login-logo">Tix Pablo</a>
+            <h2 class="mb-4">Selamat Datang Kembali!</h2>
+        </div>
+        
+        <form id="loginForm" onsubmit="return validateForm()">
+            <div class="mb-3">
+                <input type="email" class="form-control" id="email" 
+                       placeholder="Alamat Email" required
+                       pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                       title="Masukkan alamat email yang valid">
+                <div class="invalid-feedback">
+                    Masukkan alamat email yang valid
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <input type="password" class="form-control" id="password" 
+                       placeholder="Kata Sandi" required
+                       minlength="8">
+                <div class="password-strength">
+                    <div class="password-strength-meter"></div>
+                </div>
+                <div class="capslock-warning">
+                    <i class="fas fa-exclamation-triangle"></i> Caps Lock Aktif
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="remember">
+                    <label class="form-check-label" for="remember">Ingat Saya</label>
+                </div>
+                <a href="#" class="text-danger">Lupa Kata Sandi?</a>
+            </div>
+
+            <button type="submit" class="btn btn-login text-white">
+                <i class="fas fa-sign-in-alt me-2"></i>Masuk
+            </button>
+        </form>
+
+        <div class="text-center mt-3">
+            <p>Belum punya akun? <a href="#" class="text-danger">Daftar Sekarang</a></p>
+        </div>
+
+        <div class="social-login text-center">
+            <p class="text-muted mb-3">Atau masuk dengan</p>
+            <a href="#" class="social-btn">
+                <i class="fab fa-google"></i>
+            </a>
+            <a href="#" class="social-btn">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-btn">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </div>
+
+        <div class="security-features">
+            <div class="mb-2">
+                <i class="fas fa-shield-alt"></i>
+                Keamanan:
+            </div>
+            <ul class="list-unstyled small mb-0">
+                <li><i class="fas fa-check-circle"></i> Enkripsi End-to-End</li>
+                <li><i class="fas fa-check-circle"></i> Proteksi Anti-Brute Force</li>
+                <li><i class="fas fa-check-circle"></i> Verifikasi 2 Langkah (Opsional)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+
+<script>
+// Inisialisasi Particles.js
+particlesJS('particles-js',
+  {
+    "particles": {
+      "number": {
+        "value": 80,
+        "density": {
+          "enable": true,
+          "value_area": 800
+        }
+      },
+      "color": {
+        "value": "#00f7ff"
+      },
+      "shape": {
+        "type": "circle"
+      },
+      "opacity": {
+        "value": 0.5,
+        "random": false
+      },
+      "size": {
+        "value": 3,
+        "random": true
+      },
+      "line_linked": {
+        "enable": true,
+        "distance": 150,
+        "color": "#00f7ff",
+        "opacity": 0.4,
+        "width": 1
+      },
+      "move": {
+        "enable": true,
+        "speed": 6,
+        "direction": "none",
+        "random": false,
+        "straight": false,
+        "out_mode": "out",
+        "bounce": false
+      }
+    }
+  }
+);
+
+// Fungsi untuk mengecek kekuatan password
+function checkPasswordStrength(password) {
+    const meter = document.querySelector('.password-strength-meter');
+    let strength = 0;
+    
+    if(password.length >= 8) strength += 1;
+    if(password.match(/[a-z]/) && password.match(/[A-Z]/)) strength += 1;
+    if(password.match(/\d/)) strength += 1;
+    if(password.match(/[^a-zA-Z\d]/)) strength += 1;
+    
+    switch(strength) {
+        case 0:
+        case 1:
+            meter.className = 'password-strength-meter weak';
+            break;
+        case 2:
+        case 3:
+            meter.className = 'password-strength-meter medium';
+            break;
+        case 4:
+            meter.className = 'password-strength-meter strong';
+            break;
+    }
+}
+
+// Deteksi Caps Lock
+document.getElementById('password').addEventListener('keyup', function(event) {
+    const warning = document.querySelector('.capslock-warning');
+    warning.style.display = event.getModifierState('CapsLock') ? 'block' : 'none';
+    checkPasswordStrength(this.value);
+});
+
+// Validasi form
+function validateForm() {
+    const form = document.getElementById('loginForm');
+    if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+    return false;
+}
+
+// Tambahan keamanan: Nonaktifkan form setelah beberapa percobaan gagal
+let loginAttempts = 0;
+const maxAttempts = 3;
+
+function handleLoginAttempt() {
+    loginAttempts++;
+    if (loginAttempts >= maxAttempts) {
+        
